@@ -15,25 +15,25 @@
                 <tr>
                     <td class="p-2 border border-gray-300">
                         <input type="text" name="work_experiences[{{ $index }}][nama_perusahaan]"
-                            value="{{ $experience->nama_perusahaan }}"
+                            value="{{ $experience['nama_perusahaan'] }}"
                             class="shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm w-full p-2.5 border border-gray-300 rounded"
                             placeholder="Nama Perusahaan" readonly>
                     </td>
                     <td class="p-2 border border-gray-300">
                         <input type="text" name="work_experiences[{{ $index }}][posisi_terakhir]"
-                            value="{{ $experience->posisi_terakhir }}"
+                            value="{{ $experience['posisi_terakhir'] }}"
                             class="shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm w-full p-2.5 border border-gray-300 rounded"
                             placeholder="Posisi Terakhir" readonly>
                     </td>
                     <td class="p-2 border border-gray-300">
                         <input type="number" name="work_experiences[{{ $index }}][pendapatan_terakhir]"
-                            value="{{ $experience->pendapatan_terakhir }}"
+                            value="{{ $experience['pendapatan_terakhir'] }}"
                             class="shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm w-full p-2.5 border border-gray-300 rounded"
                             placeholder="Pendapatan Terakhir" readonly>
                     </td>
                     <td class="p-2 border border-gray-300">
                         <input type="number" name="work_experiences[{{ $index }}][tahun]"
-                            value="{{ $experience->tahun }}"
+                            value="{{ $experience['tahun'] }}"
                             class="shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm w-full p-2.5 border border-gray-300 rounded"
                             placeholder="Tahun" readonly>
                     </td>
@@ -41,7 +41,8 @@
             @endforeach
         </tbody>
     </table>
-    {{-- <button type="button" id="add-work-experience-row"
+</div>
+{{-- <button type="button" id="add-work-experience-row"
         class="mt-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
         disabled>Tambah Pekerjaan</button>
 </div>

@@ -1,8 +1,10 @@
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold text-center">Formulir Pendaftaran Pegawai</h1>
 
-    <form method="POST" action="{{ route('biodata.store') }}">
-        @csrf
+    {{-- <form method="POST" action="{{ route('biodata.store') }}">
+        @csrf --}}
+    <form id="formBiodata">
+        {{-- @csrf --}}
         <div class="mb-4">
             <label for="posisi" class="block text-gray-700 text-sm font-medium mb-2">Posisi yang Dilamar:</label>
             <input type="text" id="posisi" name="posisi"
@@ -119,6 +121,8 @@
         @include('biodata.partials.training')
 
         @include('biodata.partials.work_experience')
+        <!-- Data Pendidikan -->
+
 
         <div class="mb-4">
             <label for="skills" class="block text-gray-700 text-sm font-medium mb-2">Skill:</label>
@@ -130,12 +134,12 @@
             <label for="placement" class="block text-gray-700 text-sm font-medium mb-2">Bersediakah ditempatkan di
                 seluruh kantor perusahaan?</label>
             <div class="flex items-center">
-                <input type="radio" id="placement_yes" name="placement" value="yes"
+                <input type="radio" id="placement" name="placement" value="yes"
                     class="w-4 h-4 text-blue-500 border-gray-300">
                 <label for="placement_yes" class="ml-2 text-gray-700 text-sm font-medium">Ya</label>
             </div>
             <div class="flex items-center">
-                <input type="radio" id="placement_no" name="placement" value="no"
+                <input type="radio" id="placement" name="placement" value="no"
                     class="w-4 h-4 text-blue-500 border-gray-300">
                 <label for="placement_no" class="ml-2 text-gray-700 text-sm font-medium">Tidak</label>
             </div>
@@ -153,9 +157,101 @@
         </div>
 
         <div class="flex items-center">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button type="submit" id="submitForm"
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Submit
             </button>
         </div>
     </form>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $("#submitForm").click(function(e) {
+            e.preventDefault();
+
+
+            var educations = [];
+            $("#education-tbody tr").each(function(index) {
+                educations.push({
+                    jenjang_pendidikan: $(this).find("select[name^='educations[" +
+                        index + "][jenjang_pendidikan]']").val(),
+                    institusi: $(this).find("input[name^='educations[" + index +
+                        "][institusi]']").val(),
+                    jurusan: $(this).find("input[name^='educations[" + index +
+                        "][jurusan]']").val(),
+                    tahun_lulus: $(this).find("input[name^='educations[" + index +
+                        "][tahun_lulus]']").val(),
+                    ipk: $(this).find("input[name^='educations[" + index + "][ipk]']")
+                        .val()
+                });
+            });
+
+            var trainings = [];
+            $("#training-tbody tr").each(function(index) {
+                trainings.push({
+                    nama_kursus: $(this).find("input[name^='trainings[" + index +
+                        "][nama_kursus]']").val(),
+                    sertifikat: $(this).find("select[name^='trainings[" + index +
+                        "][sertifikat]']").val(),
+                    tahun: $(this).find("input[name^='trainings[" + index +
+                        "][tahun]']").val()
+                });
+            });
+
+            var workExperiences = [];
+            $("#work-experience-tbody tr").each(function(index) {
+                workExperiences.push({
+                    nama_perusahaan: $(this).find("input[name^='work_experiences[" +
+                        index + "][nama_perusahaan]']").val(),
+                    posisi_terakhir: $(this).find("input[name^='work_experiences[" +
+                        index + "][posisi_terakhir]']").val(),
+                    pendapatan_terakhir: $(this).find("input[name^='work_experiences[" +
+                        index + "][pendapatan_terakhir]']").val(),
+                    tahun: $(this).find("input[name^='work_experiences[" + index +
+                        "][tahun]']").val()
+                });
+            });
+
+
+            var biodataData = {
+                posisi_yang_dilamar: $("#posisi").val(),
+                nama: $("#nama").val(),
+                noKtp: $("#noKtp").val(),
+                tempatLahir: $("#tempatLahir").val(),
+                tanggalLahir: $("#tanggalLahir").val(),
+                jenisKelamin: $("#jenisKelamin").val(),
+                agama: $("#agama").val(),
+                golongan_darah: $("#golongan_darah").val(),
+                status: $("#status").val(),
+                alamatKtp: $("#alamatKtp").val(),
+                alamatTinggal: $("#alamatTinggal").val(),
+                email: $("#email").val(),
+                noTelp: $("#noTelp").val(),
+                orangTerdekat: $("#orangTerdekat").val(),
+                noHpOrangTerdekat: $("#noHpOrangTerdekat").val(),
+                skills: $("#skills").val(),
+                placement: $("#placement").val(),
+                expected_salary: $("#expected_salary").val(),
+                educations: educations,
+                trainings: trainings,
+                work_experiences: workExperiences
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "http://127.0.0.1:5000/api/biodata/",
+                contentType: "application/json",
+                data: JSON.stringify(biodataData),
+                success: function(response) {
+                    alert("Data biodata berhasil disimpan!");
+                    // Tambahkan logika lain jika diperlukan setelah penyimpanan sukses
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                    alert("Gagal menyimpan data biodata!");
+                }
+            });
+        });
+    });
+</script>

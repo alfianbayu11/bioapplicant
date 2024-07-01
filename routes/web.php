@@ -19,6 +19,10 @@ Route::get('/dashboard', function () {
     }
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// Route::get('/biodata/add', function () {
+//     return view('biodata.add');
+// });
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -34,9 +38,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [BiodataController::class, 'index'])->name('admin.dashboard');
     Route::resource('biodata', BiodataController::class)->except(['index']);
     Route::resource('biodata', BiodataController::class);
-    Route::get('admin/biodata/{id}/edit', [BiodataController::class, 'edit'])->name('admin.biodata.edit');
+    // Route::get('admin/biodata/{id}/edit', [BiodataController::class, 'edit'])->name('admin.biodata.edit');
     Route::get('admin/biodata/{id}', [BiodataController::class, 'show'])->name('admin.biodata.show');
-    Route::put('admin/biodata/{id}', [BiodataController::class, 'update'])->name('admin.biodata.update');
+    // Route::get('admin/biodata/{id}', [BiodataController::class, 'show'])->name('admin.biodata.show');
+    // Route::put('admin/biodata/{id}', [BiodataController::class, 'update'])->name('admin.biodata.update');
+    // Route::get('/biodata/{id}/edit', [BiodataController::class, 'edit'])->name('admin.biodata.edit');
+        // Route untuk halaman edit biodata
+    Route::get('/admin/biodata/{id}/edit', [BiodataController::class, 'edit'])->name('admin.biodata.edit');
+
+    // Route untuk meng-handle update biodata
+    Route::put('/admin/biodata/{id}', [BiodataController::class, 'update'])->name('admin.biodata.update');
+
 
     Route::delete('biodata/{id}', [BiodataController::class, 'destroy'])->name('admin.biodata.destroy');
 
